@@ -33,60 +33,61 @@ const REPEAT      = 3   // each animation plays this many times
 
 type AnimEntry = {
   name: string
-  duration: number   // ms to record
+  duration: number   // ms per play
+  repeat?: number    // overrides global REPEAT when set
 }
 
-const SPRING_ANIMATIONS: AnimEntry[] = [
-  // entrance — wait for them to settle
-  { name: 'DropSettle',       duration: 4500 },
-  { name: 'RiseOvershoot',    duration: 4500 },
-  { name: 'GravityBounce',    duration: 5000 },
-  { name: 'ExplodeFormation', duration: 5000 },
-  { name: 'CenterBurst',      duration: 5000 },
-  // interactive — show a few seconds of idle state
-  { name: 'Repulsion',        duration: 5000 },
-  { name: 'MagneticPull',     duration: 5000 },
-  { name: 'SpringKerning',    duration: 5000 },
-  { name: 'DragRelease',      duration: 5000 },
-  { name: 'GravityWell',      duration: 5000 },
-  // ambient — capture a full loop
-  { name: 'ThermalNoise',     duration: 6000 },
-  { name: 'Breathing',        duration: 6000 },
-  { name: 'OrbitalDrift',     duration: 6000 },
-  { name: 'WeightWave',       duration: 6000 },
-  { name: 'Pendulum',         duration: 5000 },
-  // event
-  { name: 'Shockwave',        duration: 5000 },
-  { name: 'WaveCascade',      duration: 4500 },
-  { name: 'JellyHover',       duration: 5000 },
-  { name: 'ScatterReturn',    duration: 5000 },
-  { name: 'DominoFall',       duration: 5000 },
-]
+// const SPRING_ANIMATIONS: AnimEntry[] = [
+//   // entrance — wait for them to settle
+//   { name: 'DropSettle',        duration:  500 },
+//   { name: 'RiseOvershoot',     duration:  750 },
+//   { name: 'GravityBounce',     duration: 1000 },
+//   { name: 'ExplodeFormation',  duration: 6000 },
+//   { name: 'CenterBurst',       duration: 5000 },
+//   // interactive — show a few seconds of idle state
+//   { name: 'Repulsion',         duration: 1000, repeat: 1 },
+//   { name: 'MagneticPull',      duration: 1000, repeat: 1 },
+//   { name: 'SpringKerning',     duration: 1000, repeat: 1 },
+//   { name: 'DragRelease',       duration: 1000, repeat: 1 },
+//   { name: 'GravityWell',       duration: 1000, repeat: 1 },
+//   // ambient — capture a full loop
+//   { name: 'ThermalNoise',      duration: 1500 },
+//   { name: 'Breathing',         duration: 1500 },
+//   { name: 'OrbitalDrift',      duration: 1500 },
+//   { name: 'WeightWave',        duration: 1500 },
+//   { name: 'Pendulum',          duration: 1000 },
+//   // event
+//   { name: 'Shockwave',         duration: 1000 },
+//   { name: 'WaveCascade',       duration:  750 },
+//   { name: 'JellyHover',        duration: 1000 },
+//   { name: 'ScatterReturn',     duration: 1000 },
+//   { name: 'DominoFall',        duration: 1000 },
+// ]
 
 const TEXT_ANIMATIONS: AnimEntry[] = [
-  { name: 'FadeUp',      duration: 4000 },
-  { name: 'BlurIn',      duration: 4000 },
-  { name: 'ScaleBounce', duration: 4500 },
-  { name: 'SlideRight',  duration: 4000 },
-  { name: 'Wave',        duration: 4500 },
-  { name: 'FlipX',       duration: 4500 },
-  { name: 'FlipY',       duration: 4500 },
-  { name: 'FallDown',    duration: 4000 },
-  { name: 'Rtl',         duration: 4000 },
-  { name: 'CenterOut',   duration: 4500 },
-  { name: 'Typewriter',  duration: 5000 },
-  { name: 'Scramble',    duration: 5000 },
-  { name: 'Glitch',      duration: 4000 },
-  { name: 'ColorSweep',  duration: 5000 },
-  { name: 'NeonPulse',   duration: 4500 },
-  { name: 'ElasticSnap', duration: 4500 },
-  { name: 'RotateIn',    duration: 4500 },
-  { name: 'Anticipate',  duration: 4500 },
-  { name: 'StaggerFade', duration: 6000 },
-  { name: 'RandomRain',  duration: 5000 },
+  { name: 'FadeUp',       duration: 1000 },
+  { name: 'BlurIn',       duration: 1000 },
+  { name: 'ScaleBounce',  duration: 1500 },
+  { name: 'SlideRight',   duration: 1000 },
+  { name: 'Wave',         duration: 1500 },
+  { name: 'FlipX',        duration: 1500 },
+  { name: 'FlipY',        duration: 1500 },
+  { name: 'FallDown',     duration: 1000 },
+  { name: 'Rtl',          duration: 1000 },
+  { name: 'CenterOut',    duration: 1500 },
+  { name: 'Typewriter',   duration: 1000 },
+  { name: 'Scramble',     duration: 1000 },
+  { name: 'Glitch',       duration: 1000 },
+  { name: 'ColorSweep',   duration: 1000 },
+  { name: 'NeonPulse',    duration: 1500 },
+  { name: 'ElasticSnap',  duration: 1500 },
+  { name: 'RotateIn',     duration: 1500 },
+  { name: 'Anticipate',   duration: 1500 },
+  { name: 'StaggerFade',  duration: 1500 },
+  { name: 'RandomRain',   duration: 1000 },
 ]
 
-const ALL_ANIMATIONS = [...SPRING_ANIMATIONS, ...TEXT_ANIMATIONS]
+const ALL_ANIMATIONS = [...TEXT_ANIMATIONS]
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
@@ -156,7 +157,8 @@ async function main() {
       }
     })()`)
 
-    await page.goto(`${url}&repeat=${REPEAT}`, { waitUntil: 'networkidle' })
+    const repeat = anim.repeat ?? REPEAT
+    await page.goto(`${url}&repeat=${repeat}`, { waitUntil: 'networkidle' })
     await page.evaluate('document.fonts.ready')
 
     // Slow CSS animations via playbackRate; poll every 50ms to catch staggered starts.
@@ -173,15 +175,15 @@ async function main() {
 
     await page.waitForTimeout(300)
 
-    // Play REPEAT times: wait for each animation to finish, then click the hidden
+    // Play `repeat` times: wait for each animation to finish, then click the hidden
     // replay button to remount the component. Playwright drives timing so it works
     // for all animation types (including ambient loops that never call onComplete).
     const playMs = anim.duration * SLOW_FACTOR
-    for (let play = 0; play < REPEAT; play++) {
+    for (let play = 0; play < repeat; play++) {
       await page.waitForTimeout(playMs)
-      if (play < REPEAT - 1) {
+      if (play < repeat - 1) {
         await page.evaluate('document.querySelector("[data-testid=\\"ink-replay\\"]").click()')
-        await page.waitForTimeout(200)  // let React remount before next play starts
+        await page.waitForTimeout(50)  // let React remount before next play starts
       }
     }
     await page.waitForTimeout(1000)  // brief hold after last play

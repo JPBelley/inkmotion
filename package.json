@@ -1,0 +1,55 @@
+{
+  "name": "inkmotion",
+  "version": "0.1.0",
+  "description": "Elegant text animations for React — spring physics and CSS transitions",
+  "type": "module",
+  "main": "./dist/inkmotion.cjs.js",
+  "module": "./dist/inkmotion.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/inkmotion.es.js",
+      "require": "./dist/inkmotion.cjs.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "record": "tsx scripts/record.ts",
+    "type-check": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=17",
+    "react-dom": ">=17"
+  },
+  "dependencies": {
+    "react": ">=17",
+    "react-dom": ">=17"
+  },
+  "devDependencies": {
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@vitejs/plugin-react": "^4",
+    "playwright": "^1.59.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5",
+    "vite": "^5",
+    "vite-plugin-dts": "^3"
+  },
+  "keywords": [
+    "react",
+    "animation",
+    "text",
+    "spring",
+    "motion",
+    "physics",
+    "typescript"
+  ],
+  "license": "MIT",
+  "author": "JP Belley"
+}
